@@ -14,8 +14,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>ControlShift</name>
     <description>
-        A real-time territory control game built to demonstrate distributed systems, real-time updates, and
-        strategic state mutation under load.
+        A real-time multiplayer strategy game built with Java to simulate high-concurrency systems, distributed state
+        management, and real-time synchronization
     </description>
 
     <!-- License -->
