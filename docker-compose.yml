@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  auth-postgres:
+    image: postgres:15
+    container_name: auth-postgres
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: authuser
+      POSTGRES_PASSWORD: authpass
+    ports:
+      - "5433:5432"
+    volumes:
+      - authdata:/var/lib/postgresql/data
+
+  player-postgres:
+    image: postgres:15
+    container_name: player-postgres
+    environment:
+      POSTGRES_DB: playerdb
+      POSTGRES_USER: playeruser
+      POSTGRES_PASSWORD: playerpass
+    ports:
+      - "5434:5432"
+    volumes:
+      - playerdata:/var/lib/postgresql/data
+
+volumes:
+  authdata:
+  playerdata:
