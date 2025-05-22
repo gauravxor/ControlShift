@@ -34,14 +34,10 @@ public class PlayerController {
         Optional<Player> player = playerService.getPlayerById(id);
         if (player.isEmpty()) {
             ApiResponse<Optional<Player>> errorResponse = new ApiResponse<Optional<Player>>()
-                    .status("error")
-                    .code(HttpStatus.NOT_FOUND.value())
                     .message("Player not found");
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         ApiResponse<Optional<Player>> response = new ApiResponse<Optional<Player>>()
-                .status("success")
-                .code(HttpStatus.OK.value())
                 .message("Player found")
                 .data(player);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -56,8 +52,6 @@ public class PlayerController {
                 newPlayer.isVerified()
         );
         ApiResponse<PlayerCreateResponse> response = new ApiResponse<PlayerCreateResponse>()
-                .status("success")
-                .code(HttpStatus.CREATED.value())
                 .message("Player created")
                 .data(responseDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
