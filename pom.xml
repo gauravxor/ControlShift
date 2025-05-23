@@ -14,6 +14,7 @@
         <module>auth-service</module>
         <module>player-service</module>
         <module>controlshift-commons</module>
+        <module>gateway-service</module>
     </modules>
 
     <groupId>com.clumsycoder</groupId>
