@@ -1,32 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.clumsycoder</groupId>
-	<artifactId>controlshift-commons</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>controlshift-commons</name>
-	<description>controlshift-commons</description>
+    <parent>
+        <groupId>com.clumsycoder</groupId>
+        <artifactId>controlshift</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
-	<properties>
-		<java.version>21</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>io.github.thibaultmeyer</groupId>
-			<artifactId>cuid</artifactId>
-			<version>2.0.3</version>
-		</dependency>
-	</dependencies>
+    <artifactId>controlshift-commons</artifactId>
+    <name>ControlShift Commons</name>
+    <version>0.0.1-SNAPSHOT</version>
+    <description>Common utilities for entire application</description>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
+    <dependencies>
+        <dependency>
+            <groupId>io.github.thibaultmeyer</groupId>
+            <artifactId>cuid</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+    </dependencies>
 </project>
