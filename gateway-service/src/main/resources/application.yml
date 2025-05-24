@@ -12,8 +12,5 @@ spring:
           uri: http://localhost:9001
           predicates:
             - Path=/api/auth/**
-  main:
-    web-application-type: reactive
-
 server:
   port: 8000
