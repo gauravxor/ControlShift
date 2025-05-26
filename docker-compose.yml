@@ -5,11 +5,11 @@ services:
     image: postgres:17.5
     container_name: auth-postgres
     environment:
-      POSTGRES_DB: authdb
-      POSTGRES_USER: authuser
-      POSTGRES_PASSWORD: authpass
+      POSTGRES_DB: ${AUTH_DB}
+      POSTGRES_USER: ${AUTH_DB_USER}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
     ports:
-      - "5433:5432"
+      - "${AUTH_DB_PORT}:5432"
     volumes:
       - authdata:/var/lib/postgresql/data
 
@@ -17,11 +17,11 @@ services:
     image: postgres:17.5
     container_name: player-postgres
     environment:
-      POSTGRES_DB: playerdb
-      POSTGRES_USER: playeruser
-      POSTGRES_PASSWORD: playerpass
+      POSTGRES_DB: ${PLAYER_DB}
+      POSTGRES_USER: ${PLAYER_DB_USER}
+      POSTGRES_PASSWORD: ${PLAYER_DB_PASSWORD}
     ports:
-      - "5434:5432"
+      - "${PLAYER_DB_PORT}:5432"
     volumes:
       - playerdata:/var/lib/postgresql/data
 
