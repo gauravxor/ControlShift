@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   auth-postgres:
-    image: postgres:15
+    image: postgres:17.5
     container_name: auth-postgres
     environment:
       POSTGRES_DB: authdb
@@ -14,7 +14,7 @@ services:
       - authdata:/var/lib/postgresql/data
 
   player-postgres:
-    image: postgres:15
+    image: postgres:17.5
     container_name: player-postgres
     environment:
       POSTGRES_DB: playerdb
