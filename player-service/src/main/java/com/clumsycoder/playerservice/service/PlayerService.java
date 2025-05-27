@@ -1,5 +1,6 @@
 package com.clumsycoder.playerservice.service;
 
+import com.clumsycoder.controlshift.commons.email.EmailService;
 import com.clumsycoder.controlshift.commons.exceptions.DuplicateResourceException;
 import com.clumsycoder.playerservice.dtos.request.PlayerCreateRequest;
 import com.clumsycoder.playerservice.models.Player;
@@ -15,11 +16,13 @@ import java.util.Optional;
 public class PlayerService {
     private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    public PlayerService(PlayerRepository playerRepository, PasswordEncoder passwordEncoder) {
+    public PlayerService(PlayerRepository playerRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.playerRepository = playerRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public Optional<Player> getPlayerById(String playerId) {
@@ -31,7 +34,9 @@ public class PlayerService {
             Player player = new Player();
             player.setEmail(request.getEmail());
             player.setPassword(passwordEncoder.encode(request.getPassword()));
-            return playerRepository.save(player);
+            Player newPlayer = playerRepository.save(player);
+            emailService.sendWelcomeEmail(newPlayer.getEmail(), "Welcome");
+            return newPlayer;
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateResourceException("Player already exist");
         }
