@@ -1,36 +1,38 @@
 package com.clumsycoder.controlshift.commons.response;
 
-public class ApiResponse<T> {
+import java.util.Map;
+
+public class ApiResponse {
     private String message;
     private String errors;
-    private T data;
+    private Map<String, Object> data;
 
 
-    public ApiResponse<T> message(String message) {
+    public ApiResponse message(String message) {
         this.message = message;
         return this;
     }
 
 
-    public ApiResponse<T> errors(String errors) {
+    public ApiResponse errors(String errors) {
         this.errors = errors;
         return this;
     }
 
-    public ApiResponse<T> data(T data) {
+    public ApiResponse data(Map<String, Object> data) {
         this.data = data;
         return this;
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public String getErrors() {
-        return errors;
+        return this.errors;
     }
 
-    public T getData() {
-        return data;
+    public Map<String, Object> getData() {
+        return this.data;
     }
 }

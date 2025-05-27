@@ -1,7 +1,9 @@
 package com.clumsycoder.playerservice.controllers;
 
+import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
+import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import com.clumsycoder.playerservice.dtos.request.PlayerCreateRequest;
-import com.clumsycoder.playerservice.dtos.response.PlayerCreateResponse;
+import com.clumsycoder.playerservice.dtos.response.PlayerDataResponse;
 import com.clumsycoder.playerservice.models.Player;
 import com.clumsycoder.playerservice.service.PlayerService;
 import jakarta.validation.Valid;
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.clumsycoder.controlshift.commons.response.ApiResponse;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,30 +32,34 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Optional<Player>>> getPlayer(@PathVariable String id) {
-        Optional<Player> player = playerService.getPlayerById(id);
-        if (player.isEmpty()) {
-            ApiResponse<Optional<Player>> errorResponse = new ApiResponse<Optional<Player>>()
-                    .message("Player not found");
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ApiResponse> getPlayer(@PathVariable String id) {
+        Optional<Player> playerOpt = playerService.getPlayerById(id);
+        if (playerOpt.isEmpty()) {
+            throw new ResourceNotFoundException("Player does not exist");
         }
-        ApiResponse<Optional<Player>> response = new ApiResponse<Optional<Player>>()
+        Player player = playerOpt.get();
+        PlayerDataResponse responseDto = new PlayerDataResponse(
+                player.getId(),
+                player.getEmail(),
+                player.isVerified()
+        );
+        ApiResponse response = new ApiResponse()
                 .message("Player found")
-                .data(player);
+                .data(Map.of("player", responseDto));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PlayerCreateResponse>> createPlayer(@Valid @RequestBody PlayerCreateRequest request) {
+    public ResponseEntity<ApiResponse> createPlayer(@Valid @RequestBody PlayerCreateRequest request) {
         Player newPlayer = playerService.createPlayer(request);
-        PlayerCreateResponse responseDto = new PlayerCreateResponse(
+        PlayerDataResponse responseDto = new PlayerDataResponse(
                 newPlayer.getId(),
                 newPlayer.getEmail(),
                 newPlayer.isVerified()
         );
-        ApiResponse<PlayerCreateResponse> response = new ApiResponse<PlayerCreateResponse>()
+        ApiResponse response = new ApiResponse()
                 .message("Player created")
-                .data(responseDto);
+                .data(Map.of("player", responseDto));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

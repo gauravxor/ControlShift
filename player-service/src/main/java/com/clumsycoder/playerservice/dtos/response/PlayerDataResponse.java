@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PlayerCreateResponse {
+public class PlayerDataResponse {
     private String id;
     private String email;
     private boolean isVerified;
