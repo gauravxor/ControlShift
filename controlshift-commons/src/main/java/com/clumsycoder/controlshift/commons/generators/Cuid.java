@@ -1,4 +1,4 @@
-package com.clumsycoder.controlshift.commons;
+package com.clumsycoder.controlshift.commons.generators;
 
 import io.github.thibaultmeyer.cuid.CUID;
 

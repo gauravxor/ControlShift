@@ -1,6 +1,6 @@
 package com.clumsycoder.authservice.models;
 
-import com.clumsycoder.controlshift.commons.Cuid;
+import com.clumsycoder.controlshift.commons.generators.Cuid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
