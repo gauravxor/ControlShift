@@ -33,7 +33,7 @@ public class LoginController {
         PlayerDataResponse dtoResponse = new PlayerDataResponse(
                 player.getId(),
                 player.getEmail(),
-                player.isVerified()
+                player.isEmailVerified()
         );
 
         ApiResponse response = new ApiResponse()

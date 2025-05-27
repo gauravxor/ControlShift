@@ -30,7 +30,7 @@ public class SignupController {
         PlayerDataResponse responseDto = new PlayerDataResponse(
                 newPlayer.getId(),
                 newPlayer.getEmail(),
-                newPlayer.isVerified()
+                newPlayer.isEmailVerified()
         );
         ApiResponse response = new ApiResponse()
                 .message("Player created")

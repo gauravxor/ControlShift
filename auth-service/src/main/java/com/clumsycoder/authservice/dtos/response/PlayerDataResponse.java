@@ -1,5 +1,6 @@
 package com.clumsycoder.authservice.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,5 +11,7 @@ import lombok.Setter;
 public class PlayerDataResponse {
     private String id;
     private String email;
-    private boolean isVerified;
+
+    @JsonProperty("isEmailVerified")
+    private boolean isEmailVerified;
 }
