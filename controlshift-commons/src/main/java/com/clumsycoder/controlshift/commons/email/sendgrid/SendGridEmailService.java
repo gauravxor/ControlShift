@@ -21,4 +21,12 @@ public class SendGridEmailService implements EmailService {
         System.out.println("to = " + to + ", name = " + name);
         emailSender.sendEmail(to, emailContent);
     }
+
+    @Override
+    public void sendVerificationOtp(String to, String otp) {
+        EmailContent emailContent = templateProvider.renderEmailVerificationTemplate(otp);
+        System.out.println("SendGridEmailService.sendVerificationOtp");
+        System.out.println("to = " + to + ", otp = " + otp);
+        emailSender.sendEmail(to, emailContent);
+    }
 }

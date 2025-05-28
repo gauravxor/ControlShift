@@ -27,7 +27,7 @@ public class SendGridEmailSender implements EmailSender {
                 new Email(this.fromEmail),
                 emailContent.getSubject(),
                 new Email(to),
-                new Content("text/plain", emailContent.getSubject())
+                new Content("text/plain", emailContent.getBody())
         );
 
         SendGrid sg = new SendGrid(apiKey);
