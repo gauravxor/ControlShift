@@ -22,29 +22,33 @@ public class OtpService {
     private final PlayerRepository playerRepository;
     private final EmailService emailService;
 
-    @Transactional
-    public void sendEmailVerificationOtp(String email, String playerId) {
-
-        OtpPurpose otpPurpose = OtpPurpose.EMAIL_VERIFICATION;
-        int otpExpiry = otpPurpose.getExpirySeconds();
-
+    private String createAndSaveOtp(String email, String playerId, OtpPurpose otpPurpose) {
         Player player = new Player();
         player.setId(playerId);
 
+        OtpEntity otpEntity = new OtpEntity();
         String otpCode = OtpGenerator.generate(OtpType.ALPHANUMERIC);
         LocalDateTime currentTimeStamp = LocalDateTime.now();
 
-        OtpEntity otpEntity = new OtpEntity();
         otpEntity.setOtpCode(otpCode);
         otpEntity.setPurpose(otpPurpose);
         otpEntity.setPlayer(player);
         otpEntity.setCreatedAt(currentTimeStamp);
-        otpEntity.setExpiresAt(currentTimeStamp.plusSeconds(otpExpiry));
+        otpEntity.setExpiresAt(currentTimeStamp.plusSeconds(otpPurpose.getExpirySeconds()));
 
         otpRepository.save(otpEntity);
+        return otpCode;
+
+    }
+
+    @Transactional
+    public void sendEmailVerificationOtp(String email, String playerId) {
+
+        OtpPurpose otpPurpose = OtpPurpose.EMAIL_VERIFICATION;
+        String generatedOtp = this.createAndSaveOtp(email, playerId, otpPurpose);
 
         try {
-            emailService.sendVerificationOtp(email, otpCode);
+            emailService.sendVerificationOtp(email, generatedOtp);
         } catch (Exception e) {
             throw new RuntimeException("Failed to send email otp");
         }
@@ -55,6 +59,7 @@ public class OtpService {
         Optional<OtpEntity> otpEntityOpt = otpRepository.findByPlayer_IdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
                 playerId, otpCode, LocalDateTime.now()
         );
+
         if (otpEntityOpt.isEmpty()) {
             return false;
         }

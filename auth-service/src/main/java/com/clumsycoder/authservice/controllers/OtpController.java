@@ -1,7 +1,10 @@
 package com.clumsycoder.authservice.controllers;
 
+import com.clumsycoder.authservice.dtos.request.OtpGenerateRequest;
 import com.clumsycoder.authservice.dtos.request.OtpValidationRequest;
 import com.clumsycoder.authservice.services.OtpService;
+import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
+import com.clumsycoder.controlshift.commons.exceptions.InvalidOtpException;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -33,5 +36,19 @@ public class OtpController {
         }
         apiResponse.message("OTP expired or invalid OTP");
         return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/send-otp")
+    public ResponseEntity<ApiResponse> resendOtp(@Valid @RequestBody OtpGenerateRequest request) {
+        OtpPurpose otpType = request.getOtpType();
+        switch (otpType) {
+            case OtpPurpose.EMAIL_VERIFICATION -> otpService.sendEmailVerificationOtp("test@test.com", "123123");
+            default -> throw new InvalidOtpException("Invalid OTP type received " + otpType);
+        }
+
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.message("OTP sent successfully");
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }
