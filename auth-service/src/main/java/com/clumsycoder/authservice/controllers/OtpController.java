@@ -1,0 +1,37 @@
+package com.clumsycoder.authservice.controllers;
+
+import com.clumsycoder.authservice.dtos.request.OtpValidationRequest;
+import com.clumsycoder.authservice.services.OtpService;
+import com.clumsycoder.controlshift.commons.response.ApiResponse;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("api/auth")
+@AllArgsConstructor
+public class OtpController {
+
+    private final OtpService otpService;
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<ApiResponse> verifyEmail(@Valid @RequestBody OtpValidationRequest request) {
+        String playerId = request.getPlayerId();
+        String otpCode = request.getOtpCode();
+        boolean isVerified = otpService.validateEmailVerificationOtp(playerId, otpCode);
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        if (isVerified) {
+            apiResponse.message("Email verified successfully");
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        apiResponse.message("OTP expired or invalid OTP");
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
+    }
+}

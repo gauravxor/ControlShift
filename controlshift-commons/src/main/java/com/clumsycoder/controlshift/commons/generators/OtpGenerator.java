@@ -5,13 +5,13 @@ import com.clumsycoder.controlshift.commons.enums.OtpType;
 import java.security.InvalidParameterException;
 import java.security.SecureRandom;
 
-public class Otp {
+public class OtpGenerator {
     private static final String DIGITS = "0123456789";
     private static final String ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String ALPHANUMERIC = DIGITS + ALPHABETS;
     private static final int DEFAULT_LENGTH = 6;
 
-    private Otp() {
+    private OtpGenerator() {
     }
 
     public static String generate(OtpType type) {
