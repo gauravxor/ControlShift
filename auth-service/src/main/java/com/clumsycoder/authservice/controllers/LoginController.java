@@ -1,8 +1,7 @@
 package com.clumsycoder.authservice.controllers;
 
+import com.clumsycoder.authservice.dtos.common.Player;
 import com.clumsycoder.authservice.dtos.request.PlayerLoginRequest;
-import com.clumsycoder.authservice.dtos.response.PlayerDataResponse;
-import com.clumsycoder.authservice.models.Player;
 import com.clumsycoder.authservice.services.JwtService;
 import com.clumsycoder.authservice.services.LoginService;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
@@ -28,18 +27,12 @@ public class LoginController {
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody PlayerLoginRequest request) {
         Player player = loginService.login(request);
 
-        PlayerDataResponse dtoResponse = new PlayerDataResponse(
-                player.getId(),
-                player.getEmail(),
-                player.isEmailVerified()
-        );
-
         String accessToken = jwtService.createAccessToken(player);
 
         ApiResponse response = new ApiResponse()
                 .message("Logged in successfully")
                 .data(Map.of(
-                        "player", dtoResponse,
+                        "player", player,
                         "accessToken", accessToken
                 ));
         return new ResponseEntity<>(response, HttpStatus.OK);

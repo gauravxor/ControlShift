@@ -1,43 +1,44 @@
 package com.clumsycoder.authservice.services;
 
+import com.clumsycoder.authservice.clients.PlayerServiceClient;
+import com.clumsycoder.authservice.dtos.common.Player;
 import com.clumsycoder.authservice.dtos.request.PlayerLoginRequest;
-import com.clumsycoder.authservice.models.Player;
-import com.clumsycoder.authservice.repositories.PlayerRepository;
-import com.clumsycoder.controlshift.commons.exceptions.DatabaseException;
-import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
+import com.clumsycoder.authservice.dtos.response.PlayerAuthResponse;
+import com.clumsycoder.authservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.exceptions.UnauthorizedException;
+import feign.FeignException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 public class LoginService {
-    private final PlayerRepository playerRepository;
+    private final PlayerServiceClient playerServiceClient;
     private final PasswordEncoder passwordEncoder;
+    private final FeignExceptionHandler feignExceptionHandler;
 
     public Player login(PlayerLoginRequest request) {
         try {
-            Optional<Player> playerOpt = playerRepository.findByEmail(request.getEmail());
 
-            if (playerOpt.isEmpty()) {
-                throw new ResourceNotFoundException("Player does not exist.");
-            }
-
-            Player player = playerOpt.get();
+            PlayerAuthResponse playerAuth = playerServiceClient.getPlayerAuthDataByEmail(request.getEmail());
 
             String rawPassword = request.getPassword();
-            String encodedPassword = player.getPassword();
+            System.out.println("Raw password = " + rawPassword);
+            String encodedPassword = playerAuth.getPassword();
+            System.out.println("Encoded password = " + encodedPassword);
 
             if (passwordEncoder.matches(rawPassword, encodedPassword)) {
-                return player;
+                return new Player(
+                        playerAuth.getEmail(),
+                        playerAuth.getId(),
+                        playerAuth.isEmailVerified()
+                );
             }
             throw new UnauthorizedException("Invalid password provided");
 
-        } catch (DatabaseException e) {
-            throw new DatabaseException("Database fucked up");
+        } catch (FeignException e) {
+            throw feignExceptionHandler.handle(e);
         }
     }
 }

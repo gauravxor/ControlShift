@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface OtpRepository extends JpaRepository<OtpEntity, Long> {
-    Optional<OtpEntity> findByPlayer_IdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
+    Optional<OtpEntity> findByPlayerIdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
             String playerId,
             String otpCode,
             LocalDateTime currentTime

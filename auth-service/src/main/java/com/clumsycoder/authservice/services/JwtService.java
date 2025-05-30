@@ -1,6 +1,6 @@
 package com.clumsycoder.authservice.services;
 
-import com.clumsycoder.authservice.models.Player;
+import com.clumsycoder.authservice.dtos.common.Player;
 import com.clumsycoder.controlshift.commons.security.Jwt;
 import org.springframework.stereotype.Service;
 

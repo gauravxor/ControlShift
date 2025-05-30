@@ -1,11 +1,13 @@
 package com.clumsycoder.playerservice.service;
 
-import com.clumsycoder.controlshift.commons.email.EmailService;
+import com.clumsycoder.controlshift.commons.exceptions.DatabaseException;
 import com.clumsycoder.controlshift.commons.exceptions.DuplicateResourceException;
+import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
 import com.clumsycoder.playerservice.dtos.request.PlayerCreateRequest;
+import com.clumsycoder.playerservice.dtos.request.PlayerPatchRequest;
 import com.clumsycoder.playerservice.models.Player;
 import com.clumsycoder.playerservice.repositories.PlayerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,20 +15,17 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class PlayerService {
     private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
-
-    @Autowired
-    public PlayerService(PlayerRepository playerRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
-        this.playerRepository = playerRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
-    }
 
     public Optional<Player> getPlayerById(String playerId) {
         return playerRepository.findById(playerId);
+    }
+
+    public Optional<Player> getPlayerByEmail(String email) {
+        return playerRepository.findByEmail(email);
     }
 
     public Player createPlayer(PlayerCreateRequest request) {
@@ -34,11 +33,30 @@ public class PlayerService {
             Player player = new Player();
             player.setEmail(request.getEmail());
             player.setPassword(passwordEncoder.encode(request.getPassword()));
-            Player newPlayer = playerRepository.save(player);
-            emailService.sendWelcomeEmail(newPlayer.getEmail(), "Welcome");
-            return newPlayer;
+            return playerRepository.save(player);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateResourceException("Player already exist");
         }
+    }
+
+    public Player updatePlayer(String playerId, PlayerPatchRequest request) {
+        Optional<Player> playerOpt = playerRepository.findById(playerId);
+        if (playerOpt.isEmpty()) {
+            throw new ResourceNotFoundException("Player does not exist.");
+        }
+
+        Player player = playerOpt.get();
+
+        if (request.getEmail() != null)
+            player.setEmail(request.getEmail());
+
+        player.setEmailVerified(request.isEmailVerified());
+
+        try {
+            playerRepository.save(player);
+        } catch (Exception e) {
+            throw new DatabaseException("Error updating the player data");
+        }
+        return player;
     }
 }

@@ -1,11 +1,13 @@
 package com.clumsycoder.authservice.controllers;
 
+import com.clumsycoder.authservice.dtos.common.Player;
 import com.clumsycoder.authservice.dtos.request.PlayerSignupRequest;
-import com.clumsycoder.authservice.dtos.response.PlayerDataResponse;
-import com.clumsycoder.authservice.models.Player;
 import com.clumsycoder.authservice.services.SignupService;
+import com.clumsycoder.authservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
+import feign.FeignException;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,26 +19,22 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth/signup")
+@AllArgsConstructor
 public class SignupController {
     private final SignupService signupService;
+    private final FeignExceptionHandler feignExceptionHandler;
 
-    public SignupController(SignupService signupService) {
-        this.signupService = signupService;
-    }
 
     @PostMapping("")
     public ResponseEntity<ApiResponse> signup(@Valid @RequestBody PlayerSignupRequest request) {
-        Player newPlayer = signupService.createPlayer(request);
-        PlayerDataResponse responseDto = new PlayerDataResponse(
-                newPlayer.getId(),
-                newPlayer.getEmail(),
-                newPlayer.isEmailVerified()
-        );
-        ApiResponse response = new ApiResponse()
-                .message("Player created")
-                .data(Map.of("player", responseDto));
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-
+        try {
+            Player newPlayer = signupService.createPlayer(request);
+            ApiResponse response = new ApiResponse()
+                    .message("Player created")
+                    .data(Map.of("player", newPlayer));
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (FeignException e) {
+            throw feignExceptionHandler.handle(e);
+        }
     }
-
 }

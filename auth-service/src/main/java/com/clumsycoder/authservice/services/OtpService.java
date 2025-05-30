@@ -1,13 +1,15 @@
 package com.clumsycoder.authservice.services;
 
+import com.clumsycoder.authservice.clients.PlayerServiceClient;
+import com.clumsycoder.authservice.dtos.request.PlayerPatchRequest;
 import com.clumsycoder.authservice.models.OtpEntity;
-import com.clumsycoder.authservice.models.Player;
 import com.clumsycoder.authservice.repositories.OtpRepository;
-import com.clumsycoder.authservice.repositories.PlayerRepository;
+import com.clumsycoder.authservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.email.EmailService;
 import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
 import com.clumsycoder.controlshift.commons.enums.OtpType;
 import com.clumsycoder.controlshift.commons.generators.OtpGenerator;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OtpService {
     private final OtpRepository otpRepository;
-    private final PlayerRepository playerRepository;
     private final EmailService emailService;
+    private final PlayerServiceClient playerServiceClient;
+    private final FeignExceptionHandler feignExceptionHandler;
 
     private String createAndSaveOtp(String email, String playerId, OtpPurpose otpPurpose) {
-        Player player = new Player();
-        player.setId(playerId);
 
         OtpEntity otpEntity = new OtpEntity();
         String otpCode = OtpGenerator.generate(OtpType.ALPHANUMERIC);
@@ -32,7 +33,7 @@ public class OtpService {
 
         otpEntity.setOtpCode(otpCode);
         otpEntity.setPurpose(otpPurpose);
-        otpEntity.setPlayer(player);
+        otpEntity.setPlayerId(playerId);
         otpEntity.setCreatedAt(currentTimeStamp);
         otpEntity.setExpiresAt(currentTimeStamp.plusSeconds(otpPurpose.getExpirySeconds()));
 
@@ -56,7 +57,7 @@ public class OtpService {
 
     @Transactional
     public boolean validateEmailVerificationOtp(String playerId, String otpCode) {
-        Optional<OtpEntity> otpEntityOpt = otpRepository.findByPlayer_IdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
+        Optional<OtpEntity> otpEntityOpt = otpRepository.findByPlayerIdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
                 playerId, otpCode, LocalDateTime.now()
         );
 
@@ -65,11 +66,21 @@ public class OtpService {
         }
 
         OtpEntity otpEntity = otpEntityOpt.get();
-        Player player = otpEntity.getPlayer();
-        player.setEmailVerified(true);
-        playerRepository.save(player);
-        otpRepository.delete(otpEntity);
-        return true;
-    }
 
+        PlayerPatchRequest player = new PlayerPatchRequest();
+        player.setEmailVerified(true);
+
+        try {
+            System.out.println("Player id = " + playerId);
+            System.out.println("player patch request = "+ player);
+
+            playerServiceClient.updatePlayer(playerId, player);
+            System.out.println("Reached here\n");
+            otpRepository.delete(otpEntity);
+            return true;
+        } catch (FeignException e) {
+            e.printStackTrace();
+            throw feignExceptionHandler.handle(e);
+        }
+    }
 }
