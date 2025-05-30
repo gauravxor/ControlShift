@@ -39,7 +39,7 @@ public class Player {
     private String password;
 
     @Column(nullable = false)
-    private boolean isVerified;
+    private boolean isEmailVerified;
 
     @Column(nullable = false)
     private Instant createdAt;

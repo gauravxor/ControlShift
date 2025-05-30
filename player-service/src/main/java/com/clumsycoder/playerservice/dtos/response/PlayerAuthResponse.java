@@ -8,10 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PlayerDataResponse {
+public class PlayerAuthResponse {
     private String id;
     private String email;
+    private String password;
 
     @JsonProperty("isEmailVerified")
     private boolean isVerified;
+
 }

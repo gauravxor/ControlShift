@@ -1,4 +1,4 @@
-package com.clumsycoder.playerservice.handlers;
+package com.clumsycoder.playerservice;
 
 import com.clumsycoder.controlshift.commons.exceptions.DuplicateResourceException;
 import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ApiResponse> handleDuplicateResource(DuplicateResourceException e) {
         return new ResponseEntity<>(
-                new ApiResponse().errors(e.getMessage()),
+                new ApiResponse().message(e.getMessage()),
                 HttpStatus.CONFLICT
         );
     }
@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse> handleResourceNotFound(ResourceNotFoundException e) {
         return new ResponseEntity<>(
-                new ApiResponse().errors(e.getMessage()),
+                new ApiResponse().message(e.getMessage()),
                 HttpStatus.NOT_FOUND
         );
     }
