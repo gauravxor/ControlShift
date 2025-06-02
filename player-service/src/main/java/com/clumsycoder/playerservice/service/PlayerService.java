@@ -3,8 +3,8 @@ package com.clumsycoder.playerservice.service;
 import com.clumsycoder.controlshift.commons.exceptions.DatabaseException;
 import com.clumsycoder.controlshift.commons.exceptions.DuplicateResourceException;
 import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
-import com.clumsycoder.playerservice.dtos.request.PlayerCreateRequest;
-import com.clumsycoder.playerservice.dtos.request.PlayerPatchRequest;
+import com.clumsycoder.playerservice.dto.request.CreatePlayerRequest;
+import com.clumsycoder.playerservice.dto.request.PlayerUpdateRequest;
 import com.clumsycoder.playerservice.models.Player;
 import com.clumsycoder.playerservice.repositories.PlayerRepository;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class PlayerService {
         return playerRepository.findByEmail(email);
     }
 
-    public Player createPlayer(PlayerCreateRequest request) {
+    public Player createPlayer(CreatePlayerRequest request) {
         try {
             Player player = new Player();
             player.setEmail(request.getEmail());
@@ -39,7 +39,7 @@ public class PlayerService {
         }
     }
 
-    public Player updatePlayer(String playerId, PlayerPatchRequest request) {
+    public Player updatePlayer(String playerId, PlayerUpdateRequest request) {
         Optional<Player> playerOpt = playerRepository.findById(playerId);
         if (playerOpt.isEmpty()) {
             throw new ResourceNotFoundException("Player does not exist.");

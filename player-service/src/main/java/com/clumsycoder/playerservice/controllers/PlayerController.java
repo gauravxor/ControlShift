@@ -2,10 +2,10 @@ package com.clumsycoder.playerservice.controllers;
 
 import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
-import com.clumsycoder.playerservice.dtos.request.PlayerCreateRequest;
-import com.clumsycoder.playerservice.dtos.request.PlayerPatchRequest;
-import com.clumsycoder.playerservice.dtos.response.PlayerAuthResponse;
-import com.clumsycoder.playerservice.dtos.response.PlayerDataResponse;
+import com.clumsycoder.playerservice.dto.common.PlayerDataResponse;
+import com.clumsycoder.playerservice.dto.request.CreatePlayerRequest;
+import com.clumsycoder.playerservice.dto.request.PlayerUpdateRequest;
+import com.clumsycoder.playerservice.dto.response.PlayerAuthResponse;
 import com.clumsycoder.playerservice.models.Player;
 import com.clumsycoder.playerservice.service.PlayerService;
 import jakarta.validation.Valid;
@@ -78,7 +78,7 @@ public class PlayerController {
     }
 
     @PostMapping
-    public ResponseEntity<PlayerDataResponse> createPlayer(@Valid @RequestBody PlayerCreateRequest request) {
+    public ResponseEntity<PlayerDataResponse> createPlayer(@Valid @RequestBody CreatePlayerRequest request) {
         Player newPlayer = playerService.createPlayer(request);
         PlayerDataResponse responseDto = new PlayerDataResponse(
                 newPlayer.getId(),
@@ -89,12 +89,12 @@ public class PlayerController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse> updatePlayer(@PathVariable String id, @RequestBody PlayerPatchRequest request) {
+    public ResponseEntity<ApiResponse> updatePlayer(@PathVariable String id, @RequestBody PlayerUpdateRequest request) {
         System.out.println("Player id to updated = " + id);
         System.out.println("Player data -------------");
 
         System.out.println(request.getEmail());
-        System.out.println(request.isEmailVerified());
+        System.out.println(request.getIsEmailVerified());
 
         Player updatedPlayer = playerService.updatePlayer(id, request);
         PlayerDataResponse responseDto = new PlayerDataResponse(
