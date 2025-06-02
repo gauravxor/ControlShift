@@ -1,7 +1,7 @@
 package com.clumsycoder.authservice.controllers;
 
-import com.clumsycoder.authservice.dtos.common.Player;
-import com.clumsycoder.authservice.dtos.request.PlayerLoginRequest;
+import com.clumsycoder.authservice.dto.common.Player;
+import com.clumsycoder.authservice.dto.request.PlayerLoginRequest;
 import com.clumsycoder.authservice.services.JwtService;
 import com.clumsycoder.authservice.services.LoginService;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;

@@ -1,14 +1,12 @@
-package com.clumsycoder.authservice.dtos.response;
+package com.clumsycoder.authservice.dto.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-public class PlayerResponse {
+public class Player {
     private String id;
     private String email;
 

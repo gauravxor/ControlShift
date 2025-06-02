@@ -1,4 +1,4 @@
-package com.clumsycoder.authservice.dtos.request;
+package com.clumsycoder.authservice.dto.request;
 
 import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
 import jakarta.validation.constraints.NotNull;
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OtpGenerateRequest {
+public class GenerateOtpRequest {
     @NotNull
-    private OtpPurpose otpType;
+    private OtpPurpose otpType;  /* Use custom enum error handler */
 }

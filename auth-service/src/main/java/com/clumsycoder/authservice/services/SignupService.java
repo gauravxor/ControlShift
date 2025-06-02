@@ -1,8 +1,8 @@
 package com.clumsycoder.authservice.services;
 
 import com.clumsycoder.authservice.clients.PlayerServiceClient;
-import com.clumsycoder.authservice.dtos.common.Player;
-import com.clumsycoder.authservice.dtos.request.PlayerSignupRequest;
+import com.clumsycoder.authservice.dto.common.Player;
+import com.clumsycoder.authservice.dto.request.PlayerSignupRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

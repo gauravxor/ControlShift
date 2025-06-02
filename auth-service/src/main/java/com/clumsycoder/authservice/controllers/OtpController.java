@@ -1,7 +1,7 @@
 package com.clumsycoder.authservice.controllers;
 
-import com.clumsycoder.authservice.dtos.request.OtpGenerateRequest;
-import com.clumsycoder.authservice.dtos.request.OtpValidationRequest;
+import com.clumsycoder.authservice.dto.request.GenerateOtpRequest;
+import com.clumsycoder.authservice.dto.request.ValidateOtpRequest;
 import com.clumsycoder.authservice.services.OtpService;
 import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
 import com.clumsycoder.controlshift.commons.exceptions.InvalidOtpException;
@@ -23,7 +23,7 @@ public class OtpController {
     private final OtpService otpService;
 
     @PostMapping("/verify-email")
-    public ResponseEntity<ApiResponse> verifyEmail(@Valid @RequestBody OtpValidationRequest request) {
+    public ResponseEntity<ApiResponse> verifyEmail(@Valid @RequestBody ValidateOtpRequest request) {
         String playerId = request.getPlayerId();
         String otpCode = request.getOtpCode();
         boolean isVerified = otpService.validateEmailVerificationOtp(playerId, otpCode);
@@ -39,7 +39,7 @@ public class OtpController {
     }
 
     @PostMapping("/send-otp")
-    public ResponseEntity<ApiResponse> resendOtp(@Valid @RequestBody OtpGenerateRequest request) {
+    public ResponseEntity<ApiResponse> resendOtp(@Valid @RequestBody GenerateOtpRequest request) {
         OtpPurpose otpType = request.getOtpType();
         switch (otpType) {
             case OtpPurpose.EMAIL_VERIFICATION -> otpService.sendEmailVerificationOtp("test@test.com", "123123");

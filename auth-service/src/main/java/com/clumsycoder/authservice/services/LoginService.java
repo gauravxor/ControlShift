@@ -1,9 +1,9 @@
 package com.clumsycoder.authservice.services;
 
 import com.clumsycoder.authservice.clients.PlayerServiceClient;
-import com.clumsycoder.authservice.dtos.common.Player;
-import com.clumsycoder.authservice.dtos.request.PlayerLoginRequest;
-import com.clumsycoder.authservice.dtos.response.PlayerAuthResponse;
+import com.clumsycoder.authservice.dto.common.Player;
+import com.clumsycoder.authservice.dto.internal.PlayerAuthResponse;
+import com.clumsycoder.authservice.dto.request.PlayerLoginRequest;
 import com.clumsycoder.authservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.exceptions.UnauthorizedException;
 import feign.FeignException;
@@ -32,7 +32,7 @@ public class LoginService {
                 return new Player(
                         playerAuth.getEmail(),
                         playerAuth.getId(),
-                        playerAuth.isEmailVerified()
+                        playerAuth.getIsEmailVerified()
                 );
             }
             throw new UnauthorizedException("Invalid password provided");

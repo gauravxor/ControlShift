@@ -1,7 +1,7 @@
 package com.clumsycoder.authservice.controllers;
 
-import com.clumsycoder.authservice.dtos.common.Player;
-import com.clumsycoder.authservice.dtos.request.PlayerSignupRequest;
+import com.clumsycoder.authservice.dto.common.Player;
+import com.clumsycoder.authservice.dto.request.PlayerSignupRequest;
 import com.clumsycoder.authservice.services.SignupService;
 import com.clumsycoder.authservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;

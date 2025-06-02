@@ -1,7 +1,7 @@
 package com.clumsycoder.authservice.services;
 
 import com.clumsycoder.authservice.clients.PlayerServiceClient;
-import com.clumsycoder.authservice.dtos.request.PlayerPatchRequest;
+import com.clumsycoder.authservice.dto.request.PlayerUpdateRequest;
 import com.clumsycoder.authservice.models.OtpEntity;
 import com.clumsycoder.authservice.repositories.OtpRepository;
 import com.clumsycoder.authservice.services.exceptions.FeignExceptionHandler;
@@ -67,12 +67,12 @@ public class OtpService {
 
         OtpEntity otpEntity = otpEntityOpt.get();
 
-        PlayerPatchRequest player = new PlayerPatchRequest();
-        player.setEmailVerified(true);
+        PlayerUpdateRequest player = new PlayerUpdateRequest();
+        player.setIsEmailVerified(true);
 
         try {
             System.out.println("Player id = " + playerId);
-            System.out.println("player patch request = "+ player);
+            System.out.println("player patch request = " + player);
 
             playerServiceClient.updatePlayer(playerId, player);
             System.out.println("Reached here\n");

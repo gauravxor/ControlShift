@@ -1,9 +1,9 @@
 package com.clumsycoder.authservice.clients;
 
-import com.clumsycoder.authservice.dtos.common.Player;
-import com.clumsycoder.authservice.dtos.request.PlayerPatchRequest;
-import com.clumsycoder.authservice.dtos.request.PlayerSignupRequest;
-import com.clumsycoder.authservice.dtos.response.PlayerAuthResponse;
+import com.clumsycoder.authservice.dto.common.Player;
+import com.clumsycoder.authservice.dto.internal.PlayerAuthResponse;
+import com.clumsycoder.authservice.dto.request.PlayerSignupRequest;
+import com.clumsycoder.authservice.dto.request.PlayerUpdateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,5 +24,5 @@ public interface PlayerServiceClient {
     Player createPlayer(@RequestBody PlayerSignupRequest user);
 
     @PatchMapping("/api/player/{id}")
-    Player updatePlayer(@PathVariable("id") String id, @RequestBody PlayerPatchRequest player);
+    Player updatePlayer(@PathVariable("id") String id, @RequestBody PlayerUpdateRequest player);
 }
