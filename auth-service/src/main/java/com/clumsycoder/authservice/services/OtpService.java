@@ -71,15 +71,10 @@ public class OtpService {
         player.setIsEmailVerified(true);
 
         try {
-            System.out.println("Player id = " + playerId);
-            System.out.println("player patch request = " + player);
-
             playerServiceClient.updatePlayer(playerId, player);
-            System.out.println("Reached here\n");
             otpRepository.delete(otpEntity);
             return true;
         } catch (FeignException e) {
-            e.printStackTrace();
             throw feignExceptionHandler.handle(e);
         }
     }

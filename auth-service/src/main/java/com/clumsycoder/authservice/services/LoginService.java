@@ -24,9 +24,7 @@ public class LoginService {
             PlayerAuthResponse playerAuth = playerServiceClient.getPlayerAuthDataByEmail(request.getEmail());
 
             String rawPassword = request.getPassword();
-            System.out.println("Raw password = " + rawPassword);
             String encodedPassword = playerAuth.getPassword();
-            System.out.println("Encoded password = " + encodedPassword);
 
             if (passwordEncoder.matches(rawPassword, encodedPassword)) {
                 return new Player(

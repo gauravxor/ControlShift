@@ -41,9 +41,6 @@ public class SendGridEmailSender implements EmailSender {
             Response response = sg.api(request);
 
             // todo: log the email sending part
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

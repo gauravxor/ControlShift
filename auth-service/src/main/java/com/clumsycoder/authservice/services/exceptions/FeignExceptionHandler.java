@@ -11,13 +11,11 @@ import org.springframework.stereotype.Component;
 public class FeignExceptionHandler {
     public RuntimeException handle(FeignException e) {
         int status = e.status();
-        System.out.println("Feign exception code = " + status);
         try {
             String content = e.contentUTF8();
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(content);
             String message = json.has("message") ? json.get("message").asText() : "Unknown error";
-            System.out.println("Message from feign exception = " + json.asText());
 
             if (status == HttpStatus.CONFLICT.value())
                 return new DuplicateResourceException(message);

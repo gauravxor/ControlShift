@@ -10,6 +10,8 @@ import com.clumsycoder.playerservice.models.Player;
 import com.clumsycoder.playerservice.service.PlayerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,7 @@ import java.util.Optional;
 @RequestMapping("/api/player")
 @AllArgsConstructor
 public class PlayerController {
+    private static final Logger logger = LoggerFactory.getLogger(PlayerController.class);
 
     private final PlayerService playerService;
     private final CompositeUriComponentsContributor compositeUriComponentsContributor;
@@ -52,18 +55,12 @@ public class PlayerController {
 
     @GetMapping("/{email}/auth")
     public ResponseEntity<PlayerAuthResponse> getPlayerByEmail(@PathVariable String email) {
-        System.out.println("Email received from auth service = " + email);
         Optional<Player> playerOpt = playerService.getPlayerByEmail(email);
         if (playerOpt.isEmpty()) {
             throw new ResourceNotFoundException("Player does not exist");
         }
 
         Player player = playerOpt.get();
-        System.out.println("Player = " + player);
-        System.out.println("Player id  = " + player.getId());
-        System.out.println("Player email = " + player.getEmail());
-        System.out.println("Player password = " + player.getPassword());
-        System.out.println("Player isEmailVerified = " + player.isEmailVerified());
 
         PlayerAuthResponse response = new PlayerAuthResponse(
                 player.getId(),
@@ -90,11 +87,6 @@ public class PlayerController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse> updatePlayer(@PathVariable String id, @RequestBody PlayerUpdateRequest request) {
-        System.out.println("Player id to updated = " + id);
-        System.out.println("Player data -------------");
-
-        System.out.println(request.getEmail());
-        System.out.println(request.getIsEmailVerified());
 
         Player updatedPlayer = playerService.updatePlayer(id, request);
         PlayerDataResponse responseDto = new PlayerDataResponse(
