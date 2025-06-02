@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class ApiResponse {
     private String message;
-    private String errors;
+    private Object errors;
     private Map<String, Object> data;
 
 
@@ -14,7 +14,7 @@ public class ApiResponse {
     }
 
 
-    public ApiResponse errors(String errors) {
+    public ApiResponse errors(Object errors) {
         this.errors = errors;
         return this;
     }
@@ -28,7 +28,7 @@ public class ApiResponse {
         return this.message;
     }
 
-    public String getErrors() {
+    public Object getErrors() {
         return this.errors;
     }
 
