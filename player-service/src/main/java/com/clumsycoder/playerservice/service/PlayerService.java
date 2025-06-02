@@ -50,7 +50,7 @@ public class PlayerService {
         if (request.getEmail() != null)
             player.setEmail(request.getEmail());
 
-        player.setEmailVerified(request.isEmailVerified());
+        player.setEmailVerified(request.getIsEmailVerified());
 
         try {
             playerRepository.save(player);
