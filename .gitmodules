@@ -10,3 +10,6 @@
 [submodule "GalactusService"]
 	path = GalactusService
 	url = https://github.com/gauravxor/GalactusService.git
+[submodule "ControlShiftCommons"]
+	path = ControlShiftCommons
+	url = https://github.com/gauravxor/ControlShiftCommons.git

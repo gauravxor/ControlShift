@@ -4,12 +4,13 @@ ControlShift backend, implemented using Spring Boot, following a microservice ar
 
 ## Services
 
-| Service Name        | Description             | Build Status                                                                                        |
-| ------------------- | ----------------------- | --------------------------------------------------------------------------------------------------- |
-| **OdinService**     | Authentication service  | ![Build Status](https://github.com/gauravxor/OdinService/actions/workflows/build.yml/badge.svg)     |
-| **NucleusService**  | User management service | ![Build Status](https://github.com/gauravxor/NucleusService/actions/workflows/build.yml/badge.svg)  |
-| **CrownService**    | Leaderboard service     | ![Build Status](https://github.com/gauravxor/CrownService/actions/workflows/build.yml/badge.svg)    |
-| **GalactusService** | API Gateway             | ![Build Status](https://github.com/gauravxor/GalactusService/actions/workflows/build.yml/badge.svg) |
+| Service Name            | Description              | Build Status                                                                                            |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------- |
+| **OdinService**         | Authentication service   | ![Build Status](https://github.com/gauravxor/OdinService/actions/workflows/build.yml/badge.svg)         |
+| **NucleusService**      | User management service  | ![Build Status](https://github.com/gauravxor/NucleusService/actions/workflows/build.yml/badge.svg)      |
+| **CrownService**        | Leaderboard service      | ![Build Status](https://github.com/gauravxor/CrownService/actions/workflows/build.yml/badge.svg)        |
+| **GalactusService**     | API Gateway              | ![Build Status](https://github.com/gauravxor/GalactusService/actions/workflows/build.yml/badge.svg)     |
+| **ControlShiftCommons** | Shared - common features | ![Build Status](https://github.com/gauravxor/ControlShiftCommons/actions/workflows/build.yml/badge.svg) |
 
 ## Architecture
 
@@ -17,6 +18,7 @@ ControlShift backend, implemented using Spring Boot, following a microservice ar
 - **NucleusService** manages user-related operations.
 - **CrownService** maintains the leaderboard logic.
 - **GalactusService** serves as the API gateway.
+- **ControlShiftCommons** contains common utility classes used across all services.
 
 ## Tech Stack
 
