@@ -1,4 +1,4 @@
-# ControlShift backend design
+# ControlShift Backend Design
 
 ControlShift backend, implemented using Spring Boot, following a microservice architecture.
 
@@ -13,17 +13,18 @@ ControlShift backend, implemented using Spring Boot, following a microservice ar
 
 ## Architecture
 
-- **OdinService** handles authentication and authorization.
+- **OdinService** handles authentication, authorization, and onboarding.
 - **NucleusService** manages user-related operations.
 - **CrownService** maintains the leaderboard logic.
 - **GalactusService** serves as the API gateway.
 
+## Tech Stack
+
+- Java 21 (Amazon Corretto 21)
+- Maven 3.9.9
+- Spring Boot 3.4.5 (per service)
+- Docker
+
 ## Getting Started
 
-Each service is a standalone Spring Boot application. You can run them individually or all together using Docker Compose (coming soon).
-
-## Prerequisites
-
-- Java 17+
-- Maven 3.8+
-- Docker & Docker Compose
+Each service is a standalone Spring Boot application and can be run independently.
