@@ -1,0 +1,12 @@
+[submodule "OdinService"]
+	path = OdinService
+	url = https://github.com/gauravxor/OdinService.git
+[submodule "NucleusService"]
+	path = NucleusService
+	url = https://github.com/gauravxor/NucleusService.git
+[submodule "CrownService"]
+	path = CrownService
+	url = https://github.com/gauravxor/CrownService.git
+[submodule "GalactusService"]
+	path = GalactusService
+	url = https://github.com/gauravxor/GalactusService.git
